@@ -1,8 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
+import weatherResReducer from './slices/weatherResponseSlice'
 // ...
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    weatherRes: weatherResReducer,
+  },
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
