@@ -11,7 +11,7 @@ interface Props {
 export const TimeAndLocation: React.FC<Props> = ({ weather: { dt, timezone, country, name } }) => {
   return (
     <>
-      <Flex align='center' justify='center' my={5}>
+      <Flex align='center' justify='center' mb={5} mt={2}>
         <Text fontWeight={400} fontSize='2xl' color='whiteAlpha.800'>
           {formatToLocalTime(dt, timezone)}
         </Text>

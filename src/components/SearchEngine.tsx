@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Flex, Input, Select, Icon, Text, Button } from '@chakra-ui/react'
+import { Box, Flex, Input, Select, Icon, Text, Button, FormHelperText, FormControl } from '@chakra-ui/react'
 import { apiWeather } from '../../api/axios'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { fillWeatherRes, selectWeatherRes } from '../../redux/slices/weatherResponseSlice'
@@ -9,15 +9,32 @@ import { MapPinIcon } from '@heroicons/react/24/outline'
 import { getFormattedWeatherData, getWeatherData } from '../../services/weatherService'
 import { Circles } from 'react-loader-spinner'
 
+interface IQuery {
+  q?: string
+  zip?: string
+  lat?: string | number
+  lon?: string | number
+}
+
+interface Props {
+  handleLocationOnClick: () => void
+  handleUnitsChange: (e: React.MouseEvent<HTMLButtonElement>) => void
+}
+
 const API_KEY = import.meta.env.VITE_API_KEY
-export const SearchEngine = () => {
+export const SearchEngine: React.FC<Props> = ({ handleLocationOnClick, handleUnitsChange }) => {
   const [location, setLocation] = React.useState('')
   const [units, setUnits] = React.useState('metric')
   const [typeOfSearch, setTypeOfSearch] = React.useState<string>('name')
+  const [textHelpers, setTextHelpers] = React.useState({ placeHolder: 'New York', helper: 'Try with your city' })
   const [weather, setWeather] = React.useState(null)
   const [isLoading, setIsLoading] = React.useState(false)
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+
+  React.useEffect(() => {
+    placeTextHelpers()
+  }, [typeOfSearch])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLocation(event.target.value)
@@ -33,7 +50,6 @@ export const SearchEngine = () => {
     switch (typeOfSearch) {
       case 'name':
         data = await getFormattedWeatherData({ q: location.trim(), units })
-        console.log(data)
         dispatch(fillWeatherRes(data))
 
         break
@@ -62,19 +78,33 @@ export const SearchEngine = () => {
     setTypeOfSearch(e.target.value)
   }
 
-  const placeHolderForTypeOfSearch =
-    typeOfSearch === 'name'
-      ? 'New York'
-      : typeOfSearch === 'latlon'
-      ? '99, 13'
-      : typeOfSearch === 'zip'
-      ? '94040, us'
-      : undefined
+  const placeTextHelpers = () => {
+    switch (typeOfSearch) {
+      case 'name':
+        setTextHelpers({ placeHolder: 'New York', helper: 'Try with your city' })
+        break
 
+      case 'latlon':
+        setTextHelpers({
+          placeHolder: '99, 13',
+          helper: 'First latitude and second longitude. Separare with a comma',
+        })
+        break
+
+      case 'zip':
+        setTextHelpers({
+          placeHolder: '94040, us',
+          helper: 'Try with your zip code and country, separate them with a comma',
+        })
+        break
+
+      default:
+        break
+    }
+  }
   return (
-    <div>
-      <Flex align='center' gap={3} as='form' onSubmit={handleSubmit}>
-        {/* <FormLabel htmlFor='location'>Location:</FormLabel> */}
+    <>
+      <Flex align='baseline' gap={3} as='form' onSubmit={handleSubmit}>
         {isLoading && (
           <Box
             display='flex'
@@ -95,13 +125,14 @@ export const SearchEngine = () => {
           <Input
             autoFocus
             variant='filled'
-            placeholder={placeHolderForTypeOfSearch}
+            placeholder={textHelpers.placeHolder}
             type='text'
             id='location'
             value={location}
             onChange={handleChange}
             _focus={{ bg: '#eee' }}
           />
+
           <Select maxW='9em' bg='#eee' onChange={handleChangeSelect}>
             <option defaultChecked value='name'>
               Name City
@@ -122,6 +153,7 @@ export const SearchEngine = () => {
           />
           <Icon
             maxW='1.5em'
+            onClick={handleLocationOnClick}
             _hover={{ color: '#9ae1e1f0' }}
             cursor='pointer'
             transition='ease-out'
@@ -136,6 +168,7 @@ export const SearchEngine = () => {
             fontWeight='300'
             fontSize='2rem'
             maxW='1em'
+            onClick={handleUnitsChange}
             name='metric'
             _hover={{ fontSize: '2.2rem' }}
           >
@@ -149,6 +182,7 @@ export const SearchEngine = () => {
             fontWeight='300'
             fontSize='2rem'
             maxW='1em'
+            onClick={handleUnitsChange}
             name='imperial'
             _hover={{ fontSize: '2.2rem' }}
           >
@@ -157,6 +191,9 @@ export const SearchEngine = () => {
         </Flex>
         {/* <Icon as={MapPinIcon} boxSize={6} /> */}
       </Flex>
-    </div>
+      <FormControl display='flex' flexDir='column'>
+        <FormHelperText color='#eee'>{textHelpers.helper}</FormHelperText>
+      </FormControl>{' '}
+    </>
   )
 }
