@@ -8,7 +8,7 @@ import Search from './pages/Search'
 
 function App() {
   return (
-    <Flex direction='column' bgColor='cyan.700'>
+    <Flex bgGradient='linear(to-br, cyan.700, gray.900)' boxShadow='xl' direction='column' bgColor='cyan.700'>
       <Navbar />
       <Box mt={3} mb={10} minW='50%' mx=' auto'>
         <Routes>

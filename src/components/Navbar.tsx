@@ -6,18 +6,11 @@ export const Navbar = () => {
   return (
     <>
       <Flex direction='column' as='nav' align='center' mb={3} pt={3}>
-        <Text fontWeight='400' fontSize='3xl'>
-          Weather Forecast
-        </Text>
-
-        <Flex w='7em' justify='space-between'>
-          <Link color='#eee' to='/'>
-            Home
-          </Link>
-          <Link color='#eee' to='/favorites'>
-            Favorites
-          </Link>
-        </Flex>
+        <Link color='#eee' to='/'>
+          <Text fontWeight='400' fontSize='3xl'>
+            Weather Forecast
+          </Text>
+        </Link>
       </Flex>
     </>
   )

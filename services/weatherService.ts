@@ -83,7 +83,7 @@ const formatForecastWeather = (data: any) => {
   daily = daily.slice(1, 6).map((d: Day) => {
     return {
       title: formatToLocalTime(d.dt, timezone, 'ccc'),
-      temp: d.temp,
+      temp: d.temp.day,
       icon: d.weather[0].icon,
     }
   })
@@ -91,7 +91,7 @@ const formatForecastWeather = (data: any) => {
   hourly = hourly.slice(1, 6).map((d: Day) => {
     return {
       title: formatToLocalTime(d.dt, timezone, 'hh:mm a'),
-      temp: d.temp.day,
+      temp: d.temp,
       icon: d.weather[0].icon,
     }
   })
