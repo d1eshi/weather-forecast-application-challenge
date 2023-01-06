@@ -24,6 +24,9 @@ const initialState: WeatherRes = {
     temp_max: 0,
     temp_min: 0,
     sunset: 0,
+    daily: [],
+    hourly: [],
+    timezone: '',
   },
 }
 

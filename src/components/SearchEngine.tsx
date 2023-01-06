@@ -17,8 +17,8 @@ interface IQuery {
 }
 
 interface Props {
-  handleLocationOnClick: () => void
-  handleUnitsChange: (e: React.MouseEvent<HTMLButtonElement>) => void
+  handleLocationOnClick?: () => void
+  handleUnitsChange?: (e: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 const API_KEY = import.meta.env.VITE_API_KEY
