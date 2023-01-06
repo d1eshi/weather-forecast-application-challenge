@@ -22,7 +22,7 @@ const API_KEY = '64d8e95012e40b04693860e8e0cb60a1'
 
 export const getWeatherData = (infoType: string, searchParams: ISearchParams) => {
   const url = new URL(BASE_URL + '/' + infoType)
-  url.search = new URLSearchParams({ ...searchParams, appid: API_KEY }) as unknown as string
+  url.search = new URLSearchParams({ ...(searchParams as any), appid: API_KEY }) as unknown as string
 
   console.log(url)
 
@@ -83,7 +83,7 @@ const formatForecastWeather = (data: any) => {
   daily = daily.slice(1, 6).map((d: Day) => {
     return {
       title: formatToLocalTime(d.dt, timezone, 'ccc'),
-      temp: d.temp.day,
+      temp: d.temp,
       icon: d.weather[0].icon,
     }
   })
