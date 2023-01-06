@@ -5,6 +5,7 @@ import { ListResults } from '../components/ListResults'
 import { SearchEngine } from '../components/SearchEngine'
 import { TemperatureAndDetails } from '../components/TemperatureAndDetails'
 import { TimeAndLocation } from '../components/TimeAndLocation'
+import { Forecast } from '../components/Forecast'
 
 export const Home = () => {
   return (
@@ -12,8 +13,9 @@ export const Home = () => {
       <SearchEngine />
       <TimeAndLocation />
       <TemperatureAndDetails />
+      <Forecast />
 
-      <ListResults />
+      {/* <ListResults /> */}
     </>
   )
 }
