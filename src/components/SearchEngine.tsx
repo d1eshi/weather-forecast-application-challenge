@@ -75,7 +75,7 @@ export const SearchEngine = () => {
     <div>
       <Flex align='center' gap={3} as='form' onSubmit={handleSubmit}>
         {/* <FormLabel htmlFor='location'>Location:</FormLabel> */}
-        <Flex gap={2} w='60%'>
+        <Flex gap={2} w={['61%', '71%']}>
           <Input
             autoFocus
             variant='filled'
