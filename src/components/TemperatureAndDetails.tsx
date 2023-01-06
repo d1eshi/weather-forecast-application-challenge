@@ -2,26 +2,35 @@ import { Box, Flex, Image, Text, Icon } from '@chakra-ui/react'
 import React from 'react'
 import { FaTemperatureHigh, FaSadTear, FaWind } from 'react-icons/fa'
 import { WiDaySunny, WiHumidity, WiSunset, WiDirectionDown, WiDirectionUp } from 'react-icons/wi'
+import { WeatherResponseFormatted } from '../../interfaces/weather'
+import { useAppSelector } from '../../redux/hooks'
+import { formatToLocalTime, iconUrlFromCode } from '../../services/weatherService'
 
-export const TemperatureAndDetails = () => {
+interface Props {
+  weather: WeatherResponseFormatted
+}
+
+export const TemperatureAndDetails: React.FC<Props> = ({
+  weather: { details, icon, temp, temp_max, temp_min, sunrise, sunset, speed, humidity, feels_like, timezone },
+}) => {
   return (
     <>
       <Flex align='center' justify='center' py={4}>
         <Text fontSize='2xl' color='cyan.300'>
-          Cloudy or whatever
+          {details}
         </Text>
       </Flex>
 
       <Flex align='center' justify='space-between' py={2}>
-        <Image boxSize={20} src='http://openweathermap.org/img/wn/01d@2x.png' alt='' />
-        <Text fontSize='5xl'>34°</Text>
+        <Image boxSize={20} src={iconUrlFromCode(icon)} alt='' />
+        <Text fontSize='5xl'>{`${temp.toFixed()}°`}</Text>
 
         <Flex direction='column' gap={2}>
           <Flex align='center' justify='center' color='white' fontWeight={400}>
             <Icon as={FaTemperatureHigh} boxSize={18} mr={1} />
             <Text>Real fell: {''}</Text>
             <Text as='span' fontWeight={500} ml={1}>
-              32°
+              {`${feels_like.toFixed()}°`}
             </Text>
           </Flex>
 
@@ -29,7 +38,7 @@ export const TemperatureAndDetails = () => {
             <Icon as={WiHumidity} boxSize={18} mr={1} />
             <Text>Humidity: {''}</Text>
             <Text as='span' fontWeight={500} ml={1}>
-              65%
+              {`${humidity.toFixed()}°`}
             </Text>
           </Flex>
 
@@ -37,7 +46,7 @@ export const TemperatureAndDetails = () => {
             <Icon as={FaWind} boxSize={18} mr={1} />
             <Text>Wind: {''}</Text>
             <Text as='span' fontWeight={500} ml={1}>
-              11 km/h
+              {`${speed.toFixed()} km/h`}
             </Text>
           </Flex>
         </Flex>
@@ -48,7 +57,7 @@ export const TemperatureAndDetails = () => {
           Rise:{' '}
           <Text as='span' fontWeight={500} ml={1}>
             {' '}
-            06:45 AM
+            {`${formatToLocalTime(sunrise, timezone, 'hh:mm a')}`}
           </Text>
         </Text>
         <Text fontWeight={300}>{''}|</Text>
@@ -58,7 +67,7 @@ export const TemperatureAndDetails = () => {
           Set:{' '}
           <Text as='span' fontWeight={500} ml={1}>
             {' '}
-            06:45 AM
+            {`${formatToLocalTime(sunset, timezone, 'hh:mm a')}`}
           </Text>
         </Text>
         <Text fontWeight={300}>{''}|</Text>
@@ -68,7 +77,7 @@ export const TemperatureAndDetails = () => {
           High:{' '}
           <Text as='span' fontWeight={500} ml={1}>
             {' '}
-            06:45 AM
+            {`${temp_max.toFixed()}°`}
           </Text>
         </Text>
         <Text fontWeight={300}>{''}|</Text>
@@ -78,7 +87,7 @@ export const TemperatureAndDetails = () => {
           Low:{' '}
           <Text as='span' fontWeight={500} ml={1}>
             {' '}
-            06:45 AM
+            {`${temp_min.toFixed()}°`}
           </Text>
         </Text>
         <Text fontWeight={300}>{''}|</Text>

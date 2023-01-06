@@ -1,56 +1,34 @@
 import { Divider, Flex, Image, Text } from '@chakra-ui/react'
 import React from 'react'
+import { DayItemWeather } from '../../interfaces/weather'
+import { useAppSelector } from '../../redux/hooks'
+import { iconUrlFromCode } from '../../services/weatherService'
 
-export const Forecast = () => {
+interface Props {
+  title: string
+  items: DayItemWeather[]
+}
+
+export const Forecast: React.FC<Props> = ({ title, items }) => {
   return (
     <>
       <Flex align='center' justify='start' mt={6} color='white'>
         <Text fontWeight={500} casing='uppercase'>
-          hourly forecast
+          {title}
         </Text>
       </Flex>
       <Divider my={2} />
 
       <Flex align='center' justify='space-between' color='white'>
-        <Flex flexDirection='column' align='center' justify='center'>
-          <Text fontWeight={400} fontSize='sm'>
-            04:30 PM
-          </Text>
-          <Image src='http://openweathermap.org/img/wn/01d@2x.png' boxSize={12} />
-          <Text fontWeight={500}>32°</Text>
-        </Flex>
-
-        <Flex flexDirection='column' align='center' justify='center'>
-          <Text fontWeight={400} fontSize='sm'>
-            04:30 PM
-          </Text>
-          <Image src='http://openweathermap.org/img/wn/01d@2x.png' boxSize={12} />
-          <Text fontWeight={500}>32°</Text>
-        </Flex>
-
-        <Flex flexDirection='column' align='center' justify='center'>
-          <Text fontWeight={400} fontSize='sm'>
-            04:30 PM
-          </Text>
-          <Image src='http://openweathermap.org/img/wn/01d@2x.png' boxSize={12} />
-          <Text fontWeight={500}>32°</Text>
-        </Flex>
-
-        <Flex flexDirection='column' align='center' justify='center'>
-          <Text fontWeight={400} fontSize='sm'>
-            04:30 PM
-          </Text>
-          <Image src='http://openweathermap.org/img/wn/01d@2x.png' boxSize={12} />
-          <Text fontWeight={500}>32°</Text>
-        </Flex>
-
-        <Flex flexDirection='column' align='center' justify='center'>
-          <Text fontWeight={400} fontSize='sm'>
-            04:30 PM
-          </Text>
-          <Image src='http://openweathermap.org/img/wn/01d@2x.png' boxSize={12} />
-          <Text fontWeight={500}>32°</Text>
-        </Flex>
+        {items?.map(item => (
+          <Flex flexDirection='column' align='center' justify='center'>
+            <Text fontWeight={400} fontSize='sm'>
+              {item.title}
+            </Text>
+            <Image src={iconUrlFromCode(item.icon)} boxSize={12} />
+            <Text fontWeight={500}>{`${item?.temp?.toFixed() ?? 10}°`}</Text>
+          </Flex>
+        ))}
       </Flex>
     </>
   )

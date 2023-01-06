@@ -6,10 +6,12 @@ import { fillWeatherRes, selectWeatherRes } from '../../redux/slices/weatherResp
 import { useNavigate } from 'react-router-dom'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
 import { MapPinIcon } from '@heroicons/react/24/outline'
+import { getFormattedWeatherData, getWeatherData } from '../../services/weatherService'
 
 const API_KEY = import.meta.env.VITE_API_KEY
 export const SearchEngine = () => {
   const [location, setLocation] = React.useState('')
+  const [units, setUnits] = React.useState('metric')
   const [typeOfSearch, setTypeOfSearch] = React.useState<string>('name')
   const [weather, setWeather] = React.useState(null)
   const navigate = useNavigate()
@@ -19,43 +21,37 @@ export const SearchEngine = () => {
     setLocation(event.target.value)
   }
 
-  const handleSubmit = (event: React.FormEvent<HTMLDivElement> & React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLDivElement> & React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     let url: string = ''
+    let data
 
     switch (typeOfSearch) {
       case 'name':
-        url = `?q=${location}&appid=${API_KEY}`
+        data = await getFormattedWeatherData({ q: location.trim(), units })
+        console.log(data)
+
+        dispatch(fillWeatherRes(data))
+
         break
       case 'latlon':
         const [lat, lon] = location.split(',')
 
-        url = `?lat=${lat.trim()}&lon=${lon.trim()}&appid=${API_KEY}`
+        data = await getFormattedWeatherData({ lat: lat.trim(), lon: lon.trim(), units })
+        dispatch(fillWeatherRes(data))
 
         break
       case 'zip':
         const [code, country] = location.split(',')
-        url = `?$zip=${code},${country}&appid=${API_KEY}`
+        data = await getFormattedWeatherData({ zip: `${code.trim()},${country.trim()}`, units })
+
+        dispatch(fillWeatherRes(data))
         break
       default:
         break
     }
-
-    // Make API request
-    apiWeather
-      .get(url)
-      .then(response => {
-        setWeather(response.data)
-        console.log(weather)
-
-        // store response
-        dispatch(fillWeatherRes(response.data))
-        navigate(`/forecast?${location}`)
-      })
-      .catch(error => {
-        console.error(error)
-      })
+    navigate(`/forecast?${location}`)
   }
 
   const handleChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -95,14 +91,14 @@ export const SearchEngine = () => {
             {/* <option></option> */}
           </Select>
         </Flex>
-        <Flex w='13%' gap={2}>
+        <Flex w='13%' gap={2} color='white'>
           <Icon cursor='pointer' transition='ease-out ' _hover={{ boxSize: 7 }} as={MagnifyingGlassIcon} boxSize={6} />
           <Icon cursor='pointer' transition='ease-out ' _hover={{ boxSize: 7 }} as={MapPinIcon} boxSize={6} />
         </Flex>
 
-        <Flex fontSize='1.5rem'>
+        <Flex fontSize='1.5rem' color='white'>
           <button name='metric'>°C</button>
-          <Text as='p' mx={1} color='#000'>
+          <Text as='p' mx={1}>
             |
           </Text>
           <button name='imperial'>°F</button>
