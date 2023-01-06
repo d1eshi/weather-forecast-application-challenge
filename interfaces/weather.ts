@@ -47,6 +47,12 @@ interface WeatherDaily {
   title: string
 }
 
+export interface DayItemWeather {
+  temp: number
+  icon: string
+  title: string
+}
+
 export interface Clouds {
   all: number
 }
