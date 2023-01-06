@@ -8,10 +8,10 @@ const Search = () => {
       <Flex direction='column'>
         <SearchEngine />
         <Box>
-          <Text mt={3} fontSize='2xl'>
+          {/* <Text mt={3} fontSize='2xl'>
             Some tips for a sucess search
-          </Text>
-          <UnorderedList>
+          </Text> */}
+          {/* <UnorderedList>
             <ListItem>The basics, put the name of a city.</ListItem>
             <ListItem>
               The latitude and longitude of a city, separate for a comma. Example:{' '}
@@ -30,7 +30,7 @@ const Search = () => {
                 94040, us
               </Text>
             </ListItem>
-          </UnorderedList>
+          </UnorderedList> */}
         </Box>
       </Flex>
     </>
