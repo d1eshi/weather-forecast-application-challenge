@@ -14,7 +14,7 @@ function App() {
         <Routes>
           <Route index path='/' element={<Home />} />
           <Route path='/search' element={<Search />} />
-          <Route path='/forecast' element={<Forecast />} />
+          <Route path='/forecast' element={<Home />} />
         </Routes>
       </Box>
     </Flex>
