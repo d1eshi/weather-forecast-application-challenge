@@ -24,8 +24,6 @@ export const getWeatherData = (infoType: string, searchParams: ISearchParams) =>
   const url = new URL(BASE_URL + '/' + infoType)
   url.search = new URLSearchParams({ ...(searchParams as any), appid: API_KEY }) as unknown as string
 
-  console.log(url)
-
   return axios
     .get(url as unknown as string)
     .then<data>(response => response.data)
@@ -33,8 +31,6 @@ export const getWeatherData = (infoType: string, searchParams: ISearchParams) =>
 }
 
 const formatCurrentWeather = (data: any) => {
-  console.log({ data }, 'from the formatter')
-
   const {
     coord: { lat, lon },
     main: { temp, feels_like, temp_min, temp_max, humidity },
